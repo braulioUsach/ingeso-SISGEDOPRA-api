@@ -2,9 +2,10 @@
   "name": "sisgedopra-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "develop": "nodemon src/server.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,14 @@
   "bugs": {
     "url": "https://github.com/braulioUsach/ingeso-SISGEDOPRA-api/issues"
   },
-  "homepage": "https://github.com/braulioUsach/ingeso-SISGEDOPRA-api#readme"
+  "homepage": "https://github.com/braulioUsach/ingeso-SISGEDOPRA-api#readme",
+  "devDependencies": {
+    "nodemon": "^1.18.6"
+  },
+  "dependencies": {
+    "config": "^3.0.0",
+    "express": "^4.16.4",
+    "koa": "^2.6.2",
+    "koa-router": "^7.4.0"
+  }
 }
