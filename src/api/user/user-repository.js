@@ -14,13 +14,17 @@ class UserRepository {
     return new Promise((resolve, reject) => {
       pool.getConnection()
         .then(conn => {
-          console.log("connected ! connection id is " + conn.threadId);
-          conn.end(); //release to pool
-          resolve();
+          console.log(`connected ! connection id is ${conn.threadId}`);
+          conn.end();
+          resolve({
+            connected: true,
+            threadId: conn.threadId
+          });
         })
         .catch(err => {
-          console.log("not connected due to error: " + err);
-          reject(err);
+          if (conn) conn.end();
+          console.log(`not connected due to error: ${err}`);
+          reject(new Error('Can`t connect to DB' + err));
         });
     })
   }
