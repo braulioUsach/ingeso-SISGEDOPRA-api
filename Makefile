@@ -1,5 +1,5 @@
 start:
-	git clone https://github.com/braulioUsach/ingeso-SISGEDOPRA-api .
+	git pull
 	npm run start
 stop:
 	npm run stop
