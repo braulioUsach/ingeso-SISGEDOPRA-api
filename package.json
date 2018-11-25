@@ -34,14 +34,16 @@
   "dependencies": {
     "@koa/cors": "^2.2.2",
     "config": "^3.0.0",
+    "crypto": "^1.0.1",
     "express": "^4.16.4",
-    "express-validator": "^5.3.0",
     "jsonwebtoken": "^8.4.0",
     "koa": "^2.6.2",
+    "koa-async-validator": "^0.2.1",
     "koa-bodyparser": "^4.2.1",
     "koa-helmet": "^4.0.0",
     "koa-respond": "^2.1.0",
     "koa-router": "^7.4.0",
+    "lodash": "^4.17.11",
     "mariadb": "^2.0.1-beta",
     "pm2": "^3.2.2"
   }

@@ -5,34 +5,38 @@ let {
 } = require('chai');
 
 describe('User', () => {
-  let Login;
+  let User;
   beforeEach(() => {
-    Login = require('../../../../src/api/user/index');
+    User = require('../../../../src/api/user/index');
   });
 
-  it('create an intance', () => {
+  it('create an instance', () => {
     let user = new User();
     expect(user).to.be.instanceof(User);
   });
 
-  it('should reject when missing paramters: user', (done) => {
-    let login = new Login();
+  it('should reject when missing parameters: firstname', (done) => {
+    const params = {};
+    let user = new User(params);
 
-    login.create()
+    user.create()
       .catch(err => {
         expect(err).to.be.an('error');
-        expect(err.message).to.be.equals('Missing paramater');
+        expect(err.message).to.be.equals('Missing paramaters');
         done();
       })
   });
 
-  it('should reject when missing paramters: password', (done) => {
-    let login = new Login();
+  it('should reject when missing parameters: lastname', (done) => {
+    const params = {
+      firstname: 'Pepito'
+    };
+    let user = new User(params);
 
-    login.create('user')
+    user.create()
       .catch(err => {
         expect(err).to.be.an('error');
-        expect(err.message).to.be.equals('Missing paramater');
+        expect(err.message).to.be.equals('Missing paramaters');
         done();
       })
   });

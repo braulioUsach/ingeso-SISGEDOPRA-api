@@ -28,6 +28,29 @@ class UserRepository {
         });
     })
   }
+
+  create(arrayParams) {
+    let conn;
+    return new Promise((resolve, reject) => {
+      pool.getConnection()
+        .then(conection => {
+          conn = conection;
+          return conn.query(
+            "INSERT INTO users(firstname, lastname, dni, dniValidator, email, password) VALUES (?,?,?,?,?,?)",
+            arrayParams
+          )
+        })
+        .then(rows => {
+          conn.end();
+          resolve(rows)
+        })
+        .catch(err => {
+          if (conn) conn.end();
+          console.log(`not connected due to error: ${err}`);
+          reject(new Error('Can`t connect to DB' + err));
+        });
+    })
+  }
 }
 
 module.exports = UserRepository;

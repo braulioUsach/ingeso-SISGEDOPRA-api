@@ -10,12 +10,12 @@ describe('Login', () => {
     Login = require('../../../../src/api/login/index');
   });
 
-  it('create an intance', () => {
+  it('create an instance', () => {
     let login = new Login();
     expect(login).to.be.instanceof(Login);
   });
 
-  it('should reject when missing paramters: user', (done) => {
+  it('should reject when missing parameters: user', (done) => {
     let login = new Login();
 
     login.create()
@@ -26,7 +26,7 @@ describe('Login', () => {
       })
   });
 
-  it('should reject when missing paramters: password', (done) => {
+  it('should reject when missing parameters: password', (done) => {
     let login = new Login();
 
     login.create('user')
