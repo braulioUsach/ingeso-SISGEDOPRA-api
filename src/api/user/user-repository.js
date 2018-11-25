@@ -51,6 +51,28 @@ class UserRepository {
         });
     })
   }
+
+  read(email, password) {
+    let conn;
+    return new Promise((resolve, reject) => {
+      pool.getConnection()
+        .then(conection => {
+          conn = conection;
+          return conn.query(
+            `SELECT * FROM users WHERE email = "${email}" AND password = "${password}"`
+          )
+        })
+        .then(rows => {
+          conn.end();
+          resolve(rows)
+        })
+        .catch(err => {
+          if (conn) conn.end();
+          console.log(`not connected due to error: ${err}`);
+          reject(new Error('Can`t connect to DB' + err));
+        });
+    })
+  }
 }
 
 module.exports = UserRepository;

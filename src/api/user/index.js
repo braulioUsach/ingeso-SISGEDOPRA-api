@@ -40,6 +40,24 @@ class User {
     })
   };
 
+  read(email, password) {
+    let userRepository = new UserRepository();
+    return new Promise((resolve, reject) => {
+      if (!this.__hasReadParams(email, password)) {
+        return reject(new Error('Missing paramaters'))
+      }
+
+      return userRepository.read(email, this.__passwordEncrypt(password))
+        .then(row => {
+          resolve(row);
+        })
+        .catch(err => {
+          console.error(err);
+          reject(err);
+        })
+    })
+  };
+
   __createParams(params) {
     return [
       params.firstName,
@@ -71,6 +89,10 @@ class User {
   }
 
   __hasCreateParams(params) {
+    return params === undefined ? false : true;
+  }
+
+  __hasReadParams(params) {
     return params === undefined ? false : true;
   }
 }

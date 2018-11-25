@@ -1,23 +1,28 @@
 'use strict';
 
 const User = require('../user/index');
+const Login = require('../login/index');
 const crypto = require('crypto');
 
 class SignUp {
   create(params) {
     let user = new User();
+    let login = new Login();
     return new Promise((resolve, reject) => {
       if (!this.__hasCreateParams(params)) {
         return reject(new Error('Missing paramaters'))
       }
 
       return user.create(params)
-        .then(resp => {
-          resolve(resp)
+        .then(user => {
+          return login.create(params.email, params.password);
+        })
+        .then(token => {
+          return resolve(token);
         })
         .catch(err => {
           console.error(err);
-          reject(err);
+          return reject(err);
         })
     })
   };

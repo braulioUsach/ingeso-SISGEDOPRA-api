@@ -15,7 +15,7 @@ describe('Login', () => {
     expect(login).to.be.instanceof(Login);
   });
 
-  it('should reject when missing parameters: user', (done) => {
+  it('should reject when missing parameters: email', (done) => {
     let login = new Login();
 
     login.create()
@@ -29,7 +29,7 @@ describe('Login', () => {
   it('should reject when missing parameters: password', (done) => {
     let login = new Login();
 
-    login.create('user')
+    login.create('email')
       .catch(err => {
         expect(err).to.be.an('error');
         expect(err.message).to.be.equals('Missing paramater');

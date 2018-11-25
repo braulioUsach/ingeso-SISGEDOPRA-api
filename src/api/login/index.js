@@ -2,31 +2,46 @@
 const jwt = require('jsonwebtoken');
 const validTime = '24h';
 
+const User = require('../user/index');
+
 class Login {
-  create(user, password) {
+  create(email, password) {
     return new Promise((resolve, reject) => {
-      if (!this.__hasParameters(user, password)) {
+      if (!this.__hasParameters(email, password)) {
         return reject(new Error('Missing paramater'))
       }
-      const tokenData = {
-        user: user,
-        accountType: 'admin'
-      }
 
-      const token = jwt.sign(tokenData, 'imsomnia_2018', {
-        expiresIn: validTime
-      });
+      let user = new User();
 
-      resolve({
-        type: "Bearer",
-        token: token,
-        expiresIn: validTime
-      });
+      return user.read(email, password)
+        .then(user => {
+          const token = this.__generateToken(email);
+
+          resolve({
+            type: "Bearer",
+            token: token,
+            expiresIn: validTime
+          });
+        })
+        .catch(err => {
+          console.error(err);
+          reject(err);
+        })
     })
   };
 
-  __hasParameters(user, password) {
-    if (user === undefined) {
+  __generateToken(email) {
+    const tokenData = {
+      email: email,
+      accountType: 'user'
+    }
+    return jwt.sign(tokenData, 'imsomnia_2018', {
+      expiresIn: validTime
+    });
+  }
+
+  __hasParameters(email, password) {
+    if (email === undefined) {
       return false;
     }
 
