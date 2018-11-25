@@ -40,6 +40,7 @@
     "koa-helmet": "^4.0.0",
     "koa-respond": "^2.1.0",
     "koa-router": "^7.4.0",
+    "mariadb": "^2.0.1-beta",
     "pm2": "^3.2.2"
   }
 }
