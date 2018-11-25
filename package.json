@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha test/unit --recursive --exit",
+    "coverage": "nyc mocha test/unit --recursive --exit",
     "develop": "nodemon src/server.js",
     "start": "pm2 start src/server.js",
     "stop": "pm2 stop server"
@@ -27,7 +28,8 @@
     "mocha": "^5.2.0",
     "nodemon": "^1.18.6",
     "nyc": "^13.1.0",
-    "sinon": "^7.1.1"
+    "sinon": "^7.1.1",
+    "supertest": "^3.3.0"
   },
   "dependencies": {
     "config": "^3.0.0",
