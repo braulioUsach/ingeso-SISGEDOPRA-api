@@ -5,7 +5,9 @@ const validTime = '24h';
 class Login {
   create(user, password) {
     return new Promise((resolve, reject) => {
-      console.log('styo ac');
+      if (!this.__hasParameters(user, password)){
+        return reject(new Error('Missing paramater'))
+      }
       const tokenData = {
         user: user,
         accountType: 'admin'
@@ -22,6 +24,18 @@ class Login {
       });
     })
   };
+
+  __hasParameters(user, password) {
+    if (user === undefined) {
+      return false;
+    }
+
+    if (password === undefined) {
+      return false;
+    }
+
+    return true;
+  }
 }
 
 module.exports = Login;
