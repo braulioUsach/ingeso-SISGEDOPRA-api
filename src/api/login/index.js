@@ -5,7 +5,7 @@ const validTime = '24h';
 class Login {
   create(user, password) {
     return new Promise((resolve, reject) => {
-      if (!this.__hasParameters(user, password)){
+      if (!this.__hasParameters(user, password)) {
         return reject(new Error('Missing paramater'))
       }
       const tokenData = {
@@ -14,10 +14,10 @@ class Login {
       }
 
       const token = jwt.sign(tokenData, 'imsomnia_2018', {
-         expiresIn: validTime
+        expiresIn: validTime
       });
 
-      resolve ({
+      resolve({
         type: "Bearer",
         token: token,
         expiresIn: validTime
