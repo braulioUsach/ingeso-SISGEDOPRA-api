@@ -1,9 +1,9 @@
 start:
+	rm package-lock.json
 	git pull
 	npm run start
 run:
-	git pull
-	npm run start
+	make start
 stop:
 	npm run stop
 restart:
