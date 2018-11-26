@@ -20,7 +20,7 @@ class User {
     let userRepository = new UserRepository();
     return new Promise((resolve, reject) => {
       if (!this.__hasCreateParams(params)) {
-        return reject(new Error('Missing paramaters'))
+        return reject(new Error('Faltan parámetros'))
       }
 
       const arrayParams = this.__createParams(params);
@@ -43,12 +43,12 @@ class User {
     let userRepository = new UserRepository();
     return new Promise((resolve, reject) => {
       if (!this.__hasReadParams(email, password)) {
-        return reject(new Error('Missing paramaters'))
+        return reject(new Error('Faltan parámetros'))
       }
 
       return userRepository.read(email, this.__passwordEncrypt(password))
         .then(row => {
-          row.length === 1 ? resolve() : reject(new Error('Bad credentials'))
+          row.length === 1 ? resolve() : reject(new Error('El correo electrónico / contraseña son incorrectos'))
         })
         .catch(err => {
           console.error(err);

@@ -48,7 +48,7 @@ class UserRepository {
           if (conn) conn.end();
           console.error(err.message);
           if (err.code === 'ER_DUP_ENTRY') {
-            reject(new Error('Already exists an account with this email'));
+            reject(new Error('Ya existe una cuenta con ese email'));
           }
           reject(err);
         });

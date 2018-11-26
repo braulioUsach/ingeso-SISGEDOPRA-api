@@ -8,7 +8,7 @@ class Login {
   create(email, password) {
     return new Promise((resolve, reject) => {
       if (!this.__hasParameters(email, password)) {
-        return reject(new Error('Missing paramater'))
+        return reject(new Error('Faltan parámetros'))
       }
 
       let user = new User();

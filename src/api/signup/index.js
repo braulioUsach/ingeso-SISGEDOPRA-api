@@ -10,7 +10,7 @@ class SignUp {
     let login = new Login();
     return new Promise((resolve, reject) => {
       if (!this.__hasCreateParams(params)) {
-        return reject(new Error('Missing paramaters'))
+        return reject(new Error('Faltan parámetros'))
       }
 
       return user.create(params)
