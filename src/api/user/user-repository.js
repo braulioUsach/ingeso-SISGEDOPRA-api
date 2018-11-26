@@ -23,7 +23,7 @@ class UserRepository {
         })
         .catch(err => {
           if (conn) conn.end();
-          console.log(`not connected due to error: ${err}`);
+          console.error(err);
           reject(new Error('Can`t connect to DB' + err));
         });
     })
@@ -46,8 +46,11 @@ class UserRepository {
         })
         .catch(err => {
           if (conn) conn.end();
-          console.log(`not connected due to error: ${err}`);
-          reject(new Error('Can`t connect to DB' + err));
+          console.error(err.message);
+          if (err.code === 'ER_DUP_ENTRY') {
+            reject(new Error('Already exists an account with this email'));
+          }
+          reject(err);
         });
     })
   }
@@ -68,8 +71,8 @@ class UserRepository {
         })
         .catch(err => {
           if (conn) conn.end();
-          console.log(`not connected due to error: ${err}`);
-          reject(new Error('Can`t connect to DB' + err));
+          console.error(err);
+          reject(err);
         });
     })
   }
