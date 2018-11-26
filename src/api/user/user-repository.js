@@ -64,7 +64,7 @@ class UserRepository {
         })
         .then(rows => {
           conn.end();
-          resolve(rows)
+          resolve(JSON.parse(JSON.stringify(rows)));
         })
         .catch(err => {
           if (conn) conn.end();

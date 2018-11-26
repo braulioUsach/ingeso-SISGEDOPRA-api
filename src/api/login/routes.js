@@ -19,7 +19,7 @@ router
         ctx.body = await login.create(ctx.request.body.email, ctx.request.body.password);
       }
     } catch (err) {
-      ctx.status = 404;
+      ctx.status = 400;
       ctx.body = {
         error: err.message
       };

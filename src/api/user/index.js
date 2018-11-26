@@ -26,7 +26,6 @@ class User {
       const arrayParams = this.__createParams(params);
       return userRepository.create(arrayParams)
         .then(row => {
-          console.log('row', row);
           resolve({
             id: row.insertId,
             firstName: params.firstName,
@@ -49,7 +48,7 @@ class User {
 
       return userRepository.read(email, this.__passwordEncrypt(password))
         .then(row => {
-          resolve(row);
+          row.length === 1 ? resolve() : reject(new Error('Bad credentials'))
         })
         .catch(err => {
           console.error(err);
