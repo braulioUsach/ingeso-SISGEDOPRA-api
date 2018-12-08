@@ -20,8 +20,17 @@ class Document {
     });
   }
 
-  static read(id) {
+  static read(id, tokenValues) {
     return new Promise((resolve, reject) => Repository.read(id)
+      .then(row => resolve(row))
+      .catch((err) => {
+        console.error(err);
+        return reject(err);
+      }));
+  }
+
+  static readByUser(userId) {
+    return new Promise((resolve, reject) => Repository.readByUser(userId)
       .then(row => resolve(row))
       .catch((err) => {
         console.error(err);

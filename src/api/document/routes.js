@@ -28,10 +28,24 @@ router
 
 router
   .get('/:id', async (ctx) => {
-    console.log(ctx.params);
     try {
+      const tokenValues = LoginHelper.readToken(ctx.header.authorization.split(' ').pop());
       ctx.status = 200;
-      ctx.body = await Document.read(ctx.params.id);
+      ctx.body = await Document.read(ctx.params.id, tokenValues);
+    } catch (err) {
+      ctx.status = 404;
+      ctx.body = {
+        error: err.message,
+      };
+    }
+  });
+
+router
+  .get('/', async (ctx) => {
+    try {
+      const tokenValues = LoginHelper.readToken(ctx.header.authorization.split(' ').pop());
+      ctx.status = 200;
+      ctx.body = await Document.readByUser(tokenValues.userId);
     } catch (err) {
       ctx.status = 404;
       ctx.body = {
