@@ -9,33 +9,15 @@ const pool = mariadb.createPool({
 });
 
 class UserRepository {
-  static ping() {
-    return new Promise((resolve, reject) => {
-      pool.getConnection()
-        .then((conn) => {
-          console.log(`connected ! connection id is ${conn.threadId}`);
-          conn.end();
-          resolve({
-            connected: true,
-            threadId: conn.threadId,
-          });
-        })
-        .catch((err) => {
-          console.error(err);
-          reject(new Error(console.log(`Can't connect to DB: ${err}`)));
-        });
-    });
-  }
-
-  static create(params) {
+  static create(arrayParams) {
     let conn;
     return new Promise((resolve, reject) => {
       pool.getConnection()
         .then((conection) => {
           conn = conection;
           return conn.query(
-            'INSERT INTO documents(name, creatorId, type) VALUES (?,?, ?)',
-            params,
+            'INSERT INTO users(firstname, lastname, dni, dniValidator, email, password) VALUES (?,?,?,?,?,?)',
+            arrayParams,
           );
         })
         .then((rows) => {
@@ -45,26 +27,29 @@ class UserRepository {
         .catch((err) => {
           if (conn) conn.end();
           console.error(err.message);
+          if (err.code === 'ER_DUP_ENTRY') {
+            reject(new Error('Ya existe una cuenta con ese email'));
+          }
           reject(err);
         });
     });
   }
 
-  static read(id) {
+  static read(email) {
     let conn;
     return new Promise((resolve, reject) => {
       pool.getConnection()
         .then((conection) => {
           conn = conection;
           return conn.query(
-            `SELECT * FROM documents WHERE id = "${id}"`,
+            `SELECT * FROM users WHERE email = "${email}"`,
           );
         })
         .then((rows) => {
           conn.end();
           const aux = JSON.parse(JSON.stringify(rows));
           if (aux.length !== 1) {
-            return reject(new Error('Documento no encontrado'));
+            return reject(new Error('Usuario no encontrado'));
           }
           return resolve(aux[0]);
         })

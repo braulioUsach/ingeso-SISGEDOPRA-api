@@ -1,55 +1,31 @@
-'use strict';
-const jwt = require('jsonwebtoken');
-const validTime = '24h';
-
 const User = require('../user/index');
+const Helper = require('./helper');
 
 class Login {
-  create(email, password) {
+  static create(email, password) {
     return new Promise((resolve, reject) => {
-      if (!this.__hasParameters(email, password)) {
-        return reject(new Error('Faltan parámetros'))
+      if (!Helper.hasParameters(email, password)) {
+        return reject(new Error('Faltan parámetros'));
       }
 
-      let user = new User();
-
-      return user.read(email, password)
-        .then(user => {
-          const token = this.__generateToken(email);
-
-          resolve({
-            type: "Bearer",
-            token: token,
-            expiresIn: validTime
+      return User.read(email)
+        .then((data) => {
+          console.log('data', data);
+          const encryptedPassword = Helper.passwordEncrypt(password);
+          if (data.password !== encryptedPassword) {
+            return reject(new Error('No existe un usuario con esas credenciales'));
+          }
+          const token = Helper.createToken(data);
+          return resolve({
+            type: 'Bearer',
+            token,
           });
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
           reject(err);
-        })
-    })
-  };
-
-  __generateToken(email) {
-    const tokenData = {
-      email: email,
-      accountType: 'user'
-    }
-    return jwt.sign(tokenData, 'imsomnia_2018', {
-      expiresIn: validTime
+        });
     });
-  }
-
-  __hasParameters(email, password) {
-    if (email === undefined) {
-      return false;
-    }
-
-    if (password === undefined) {
-      return false;
-    }
-
-    return true;
   }
 }
 

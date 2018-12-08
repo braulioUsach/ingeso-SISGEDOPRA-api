@@ -1,36 +1,33 @@
-'use strict';
-
 const Repository = require('./repository');
+const Helper = require('./helper');
 
-class User {
-  static ping() {
-    let userRepository = new Repository();
+class Document {
+  static create(params, tokenValues) {
     return new Promise((resolve, reject) => {
-      userRepository.ping()
-        .then((resp) => {
-          resolve(resp);
-        })
-        .catch(err => {
-          reject(err);
-        })
-    })
-  }
-  static create(params) {
-    return new Promise((resolve, reject) => {
-      return Repository.create({name: 'documento de prueba'})
-        .then(row => {
+      const paramsFormatted = Helper.paramsToCreate(params, tokenValues);
+      return Repository.create(paramsFormatted)
+        .then((row) => {
           resolve({
             id: row.insertId,
-            name: params.name
+            name: params.name,
+            type: params.type,
           });
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
           reject(err);
-        })
-    })
-  };
+        });
+    });
+  }
 
+  static read(id) {
+    return new Promise((resolve, reject) => Repository.read(id)
+      .then(row => resolve(row))
+      .catch((err) => {
+        console.error(err);
+        return reject(err);
+      }));
+  }
 }
 
-module.exports = User;
+module.exports = Document;
