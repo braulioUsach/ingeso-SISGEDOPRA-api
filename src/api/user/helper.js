@@ -1,5 +1,5 @@
-const _ = require('lodash');
 const crypto = require('crypto');
+const AppHelper = require('../../app/helper');
 
 class UserHelper {
   static createParams(params) {
@@ -14,9 +14,7 @@ class UserHelper {
   }
 
   static formatValidationInputsError(errors) {
-    const resp = {};
-    _.chain(errors).groupBy('param').map((v, i) => { resp[i] = _.map(v, 'msg'); }).value();
-    return resp;
+    return AppHelper.formatValidationInputsError(errors);
   }
 
   static extractDNI(dni) {

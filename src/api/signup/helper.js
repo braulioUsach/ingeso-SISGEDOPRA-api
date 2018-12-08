@@ -1,4 +1,4 @@
-const _ = require('lodash');
+const AppHelper = require('../../app/helper');
 
 class SignUpHelper {
   static hasCreateParams(params) {
@@ -6,9 +6,7 @@ class SignUpHelper {
   }
 
   static formatValidationInputsError(errors) {
-    const resp = {};
-    _.chain(errors).groupBy('param').map((v, i) => { resp[i] = _.map(v, 'msg'); }).value();
-    return resp;
+    return AppHelper.formatValidationInputsError(errors);
   }
 }
 
