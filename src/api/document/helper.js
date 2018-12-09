@@ -11,6 +11,12 @@ class DocumentHelper {
   static formatValidationInputsError(errors) {
     return AppHelper.formatValidationInputsError(errors);
   }
+
+  static hasValidCredential(token) {
+    const resp = (token !== undefined && token !== null);
+    console.log(resp);
+    return resp;
+  }
 }
 
 module.exports = DocumentHelper;
