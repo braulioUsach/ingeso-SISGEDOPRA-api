@@ -10,6 +10,7 @@ router
       ctx.checkBody('name', 'Este campo es requerido').notEmpty();
       ctx.checkBody('name', 'Este campo requiere entre 3 y 255 caracteres').len(3, 255);
       ctx.checkBody('type', 'Este campo es requerido').notEmpty();
+      ctx.checkBody('type', 'Este campo debe ser un entero').isInt();
       const invalid = await ctx.validationErrors();
       if (invalid) {
         ctx.body = Helper.formatValidationInputsError(invalid);
