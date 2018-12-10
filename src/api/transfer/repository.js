@@ -15,7 +15,6 @@ class TransferRepository {
       pool.getConnection()
         .then((conection) => {
           conn = conection;
-          console.log('params', params);
           return conn.query(
             'INSERT INTO transfers (documentId, userIdFrom, userIdTo) VALUES (?, ?, ?)',
             params,
@@ -59,20 +58,25 @@ class TransferRepository {
     });
   }
 
-  static readByUser(userid) {
+  static readLastByDocument(documentId) {
     let conn;
     return new Promise((resolve, reject) => {
       pool.getConnection()
         .then((conection) => {
           conn = conection;
           return conn.query(
-            `SELECT * FROM documents WHERE creatorId = "${userid}"`,
+            `SELECT MAX(id) as id, documentId, userIdFrom, userIdTo
+            FROM transfers
+            WHERE documentId = ${documentId};`,
           );
         })
         .then((rows) => {
           conn.end();
           const aux = JSON.parse(JSON.stringify(rows));
-          return resolve(aux);
+          if (aux.length !== 1) {
+            return reject(new Error('No existen transferencias para este documento'));
+          }
+          return resolve(aux[0]);
         })
         .catch((err) => {
           if (conn) conn.end();
