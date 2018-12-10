@@ -62,7 +62,8 @@ class UserRepository {
               FROM transfers t
               WHERE t.documentId = d.id ORDER BY id DESC LIMIT 1) AS currentUserAssigned
             FROM documents d
-            WHERE d.creatorId = ${userId};`,
+            WHERE d.creatorId = ${userId}
+            ORDER By d.id DESC;`,
           );
         })
         .then((rows) => {
