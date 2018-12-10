@@ -22,7 +22,12 @@ class Document {
 
   static read(id, tokenValues) {
     return new Promise((resolve, reject) => Repository.read(id)
-      .then(row => resolve(row))
+      .then((row) => {
+        if (row.creatorId !== tokenValues.userId && row.currentUserAssigned !== tokenValues.userId) {
+          reject(new Error('No tienes permisos para leer el documento'));
+        }
+        return resolve(row)
+      })
       .catch((err) => {
         console.error(err);
         return reject(err);
@@ -30,6 +35,15 @@ class Document {
   }
 
   static readByUser(userId) {
+    return new Promise((resolve, reject) => Repository.readByUser(userId)
+      .then(row => resolve(row))
+      .catch((err) => {
+        console.error(err);
+        return reject(err);
+      }));
+  }
+
+  static allowedReceivers(id, tokenValues) {
     return new Promise((resolve, reject) => Repository.readByUser(userId)
       .then(row => resolve(row))
       .catch((err) => {
