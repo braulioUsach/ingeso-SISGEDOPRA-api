@@ -30,11 +30,36 @@ class Transfer {
   }
 
   static pendingByUser(userId) {
-    console.log('llando al método de transfer');
     return new Promise((resolve, reject) => Repository.readPendingByUser(userId)
       .then((rows) => {
         resolve(rows);
       })
+      .catch((err) => {
+        console.error(err);
+        reject(err);
+      }));
+  }
+
+  static read(id, tokenValues) {
+    return new Promise((resolve, reject) => Repository.read(id)
+      .then((row) => {
+        if (row.userIdFrom !== tokenValues.userId && row.userIdTo !== tokenValues.userId) {
+          reject(new Error('No autorizado a ver transferencia'));
+        }
+        return resolve(row);
+      })
+      .catch((err) => {
+        console.error(err);
+        reject(err);
+      }));
+  }
+
+  static approve(id, tokenValues) {
+    console.log('llando al método de transfer');
+    return new Promise((resolve, reject) => Transfer.read(id, tokenValues)
+      .then(() => Repository.approve(id))
+      .then(() => Transfer.read(id, tokenValues))
+      .then(rows => resolve(rows))
       .catch((err) => {
         console.error(err);
         reject(err);

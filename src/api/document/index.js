@@ -56,7 +56,6 @@ class Document {
   }
 
   static pending(tokenValues) {
-    console.log('llamano a pending');
     return new Promise((resolve, reject) => Transfer.pendingByUser(tokenValues.userId)
       .then(rows => resolve(rows))
       .catch((err) => {

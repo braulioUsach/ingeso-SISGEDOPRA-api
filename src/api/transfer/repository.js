@@ -33,20 +33,22 @@ class TransferRepository {
   }
 
   static read(id) {
+    console.log('id', id);
     let conn;
     return new Promise((resolve, reject) => {
       pool.getConnection()
         .then((conection) => {
           conn = conection;
           return conn.query(
-            `SELECT * FROM documents WHERE id = "${id}"`,
+            `SELECT * FROM transfers WHERE id = ${id}`,
           );
         })
         .then((rows) => {
           conn.end();
           const aux = JSON.parse(JSON.stringify(rows));
+          console.log(aux);
           if (aux.length !== 1) {
-            return reject(new Error('Documento no encontrado'));
+            return reject(new Error('Transferencia no encontrada'));
           }
           return resolve(aux[0]);
         })
@@ -118,6 +120,28 @@ class TransferRepository {
           if (conn) conn.end();
           console.error(err);
           return reject(err);
+        });
+    });
+  }
+
+  static approve(id) {
+    let conn;
+    return new Promise((resolve, reject) => {
+      pool.getConnection()
+        .then((conection) => {
+          conn = conection;
+          return conn.query(
+            `UPDATE transfers SET approved=1 WHERE id = ${id};`,
+          );
+        })
+        .then((rows) => {
+          conn.end();
+          resolve(rows);
+        })
+        .catch((err) => {
+          if (conn) conn.end();
+          console.error(err.message);
+          reject(err);
         });
     });
   }
