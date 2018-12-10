@@ -85,6 +85,34 @@ class TransferRepository {
         });
     });
   }
+
+  static readPendingByUser(userId) {
+    let conn;
+    return new Promise((resolve, reject) => {
+      pool.getConnection()
+        .then((conection) => {
+          conn = conection;
+          return conn.query(
+            `SELECT MAX(id) as id, documentId, userIdFrom, userIdTo
+            FROM transfers
+            WHERE documentId = ${documentId};`,
+          );
+        })
+        .then((rows) => {
+          conn.end();
+          const aux = JSON.parse(JSON.stringify(rows));
+          if (aux.length !== 1) {
+            return reject(new Error('No existen transferencias para este documento'));
+          }
+          return resolve(aux[0]);
+        })
+        .catch((err) => {
+          if (conn) conn.end();
+          console.error(err);
+          return reject(err);
+        });
+    });
+  }
 }
 
 module.exports = TransferRepository;

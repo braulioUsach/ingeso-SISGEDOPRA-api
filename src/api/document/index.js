@@ -1,6 +1,7 @@
 const Repository = require('./repository');
 const Helper = require('./helper');
 const User = require('../user/index');
+const Transfer = require('../transfer/index');
 
 class Document {
   static create(params, tokenValues) {
@@ -48,6 +49,17 @@ class Document {
     return new Promise((resolve, reject) => Document.read(id, tokenValues)
       .then(() => User.readAll())
       .then(users => resolve(users.filter(u => u.id !== tokenValues.userId)))
+      .catch((err) => {
+        console.error(err);
+        return reject(err);
+      }));
+  }
+
+  static pending(tokenValues) {
+    return new Promise((resolve, reject) => Repository.read(id)
+      .then((row) => {
+        return resolve(row);
+      })
       .catch((err) => {
         console.error(err);
         return reject(err);
