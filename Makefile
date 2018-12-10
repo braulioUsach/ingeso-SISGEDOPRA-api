@@ -1,15 +1,15 @@
 start:
 	npm run start
-run:
-	make start
+aws:
+	nom run aws
 stop:
 	npm run stop
 restart:
 	make stop
-	make run
+	make aws
 update:
 	make stop
 	rm package-lock.json
 	git pull
 	npm install
-	make start
+	make aws
