@@ -40,6 +40,18 @@ class Transfer {
       }));
   }
 
+  static approvedByUser(userId) {
+    return new Promise((resolve, reject) => Repository.readApprovedByUser(userId)
+      .then((rows) => {
+        console.log('approved', rows);
+        resolve(rows);
+      })
+      .catch((err) => {
+        console.error(err);
+        reject(err);
+      }));
+  }
+
   static read(id, tokenValues) {
     return new Promise((resolve, reject) => Repository.read(id)
       .then((row) => {

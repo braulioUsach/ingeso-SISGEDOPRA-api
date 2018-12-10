@@ -124,6 +124,42 @@ class TransferRepository {
     });
   }
 
+  static readApprovedByUser(userId) {
+    console.log('debería estar llamando a este repo');
+    let conn;
+    return new Promise((resolve, reject) => {
+      pool.getConnection()
+        .then((conection) => {
+          conn = conection;
+          return conn.query(
+            `SELECT
+	            d.id as documentId,
+	            d.name as documentName,
+	            u.id as senderId,
+	            u.firstName as senderName,
+	            u.lastName as senderLastName,
+	            t.id as transferId,
+	            t.created as transferDate
+            FROM transfers t, documents d, users u
+            WHERE t.userIdTo = ${userId}
+            AND t.approved = 1
+            AND t.userIdFrom = u.id
+            AND t.documentId = d.id;`,
+          );
+        })
+        .then((rows) => {
+          conn.end();
+          const aux = JSON.parse(JSON.stringify(rows));
+          return resolve(aux);
+        })
+        .catch((err) => {
+          if (conn) conn.end();
+          console.error(err);
+          return reject(err);
+        });
+    });
+  }
+
   static approve(id) {
     let conn;
     return new Promise((resolve, reject) => {

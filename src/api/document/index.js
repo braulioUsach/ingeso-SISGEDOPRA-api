@@ -63,6 +63,16 @@ class Document {
         return reject(err);
       }));
   }
+
+  static approved(tokenValues) {
+    console.log('approved');
+    return new Promise((resolve, reject) => Transfer.approvedByUser(tokenValues.userId)
+      .then(rows => resolve(rows))
+      .catch((err) => {
+        console.error(err);
+        return reject(err);
+      }));
+  }
 }
 
 module.exports = Document;
