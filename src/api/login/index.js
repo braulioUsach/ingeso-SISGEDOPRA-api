@@ -19,6 +19,7 @@ class Login {
           return resolve({
             type: 'Bearer',
             token,
+            userId: data.id,
           });
         })
         .catch((err) => {

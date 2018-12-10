@@ -8,7 +8,18 @@ class Transfer {
       const paramsFormatted = Helper.paramsToCreate(params, tokenValues);
       return DocumentRepository.read(params.document)
         .then((doc) => {
-          if ((doc.currentUserAssigned === null && doc.creatorId !== tokenValues.userId) || doc.currentUserAssigned !== tokenValues.userId) {
+          console.info('doc.currentUserAssigned', doc.currentUserAssigned);
+          console.info('doc.creatorId', doc.creatorId);
+          console.info('tokenValues.userId', tokenValues.userId);
+          if (doc.currentUserAssigned === null && doc.creatorId !== tokenValues.userId) {
+            console.log('rechazo 1');
+            console.log(doc.currentUserAssigned === null);
+            reject(new Error('No puedes transferir el documento, ya que no eres el actual responsable del documento'));
+          }
+
+          if (doc.currentUserAssigned !== tokenValues.userId && doc.currentUserAssigned !== null) {
+            console.log('rechazo 2');
+            console.log((doc.currentUserAssigned !== tokenValues.userId));
             reject(new Error('No puedes transferir el documento, ya que no eres el actual responsable del documento'));
           }
 
@@ -80,9 +91,7 @@ class Transfer {
 
   static readByDocument(documentId, tokenValues) {
     return new Promise((resolve, reject) => Repository.readByDocument(documentId)
-      .then((row) => {
-        return resolve(row);
-      })
+      .then(row => resolve(row))
       .catch((err) => {
         console.error(err);
         reject(err);
