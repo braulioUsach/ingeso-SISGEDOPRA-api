@@ -1,7 +1,7 @@
 start:
 	npm run start
 aws:
-	nom run aws
+	npm run aws
 stop:
 	npm run stop
 restart:
