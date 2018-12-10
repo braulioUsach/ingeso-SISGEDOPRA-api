@@ -4,15 +4,13 @@ const Helper = require('./helper');
 
 class SignUp {
   static create(params) {
-    const user = new User();
-    const login = new Login();
     return new Promise((resolve, reject) => {
       if (!Helper.hasCreateParams(params)) {
         return reject(new Error('Faltan parámetros'));
       }
 
-      return user.create(params)
-        .then(() => login.create(params.email, params.password))
+      return User.create(params)
+        .then(() => Login.create(params.email, params.password))
         .then(token => resolve(token))
         .catch((err) => {
           console.error(err);

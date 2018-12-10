@@ -6,10 +6,10 @@ class UserHelper {
     return [
       params.firstName,
       params.lastName,
-      this.constructor.extractDNI(params.rut),
-      this.constructor.extractDNIValidator(params.rut),
+      UserHelper.extractDNI(params.rut),
+      UserHelper.extractDNIValidator(params.rut),
       params.email,
-      this.constructor.passwordEncrypt(params.password),
+      UserHelper.passwordEncrypt(params.password),
     ];
   }
 
