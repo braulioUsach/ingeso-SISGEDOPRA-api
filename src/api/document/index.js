@@ -64,7 +64,7 @@ class Document {
       }));
   }
 
-  static approved(tokenValues) {
+  static received(tokenValues) {
     console.log('approved');
     return new Promise((resolve, reject) => Transfer.approvedByUser(tokenValues.userId)
       .then(rows => resolve(rows))

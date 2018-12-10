@@ -52,24 +52,25 @@ router
     }
   });
 
-  router
-    .get('/approved', async (ctx) => {
-      try {
-        if (!Helper.hasValidCredential(ctx.header.authorization)) {
-          ctx.status = 401;
-          ctx.body = { error: 'Credenciales inválidas' };
-          return;
-        }
-        const tokenValues = LoginHelper.readToken(ctx.header.authorization.split(' ').pop());
-        ctx.status = 200;
-        ctx.body = await Document.approved(tokenValues);
-      } catch (err) {
-        ctx.status = 404;
-        ctx.body = {
-          error: err.message,
-        };
+router
+  .get('/received', async (ctx) => {
+    try {
+      if (!Helper.hasValidCredential(ctx.header.authorization)) {
+        ctx.status = 401;
+        ctx.body = { error: 'Credenciales inválidas' };
+        return;
       }
-    });
+      const tokenValues = LoginHelper.readToken(ctx.header.authorization.split(' ').pop());
+      ctx.status = 200;
+      ctx.body = await Document.received(tokenValues);
+    } catch (err) {
+      ctx.status = 404;
+      ctx.body = {
+        error: err.message,
+      };
+    }
+  });
+
 
 router
   .get('/:id', async (ctx) => {
