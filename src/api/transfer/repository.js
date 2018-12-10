@@ -15,8 +15,9 @@ class TransferRepository {
       pool.getConnection()
         .then((conection) => {
           conn = conection;
+          console.log('params', params);
           return conn.query(
-            'INSERT INTO transfer(document, from, to) VALUES (?,?,?,?)',
+            'INSERT INTO transfers (documentId, userIdFrom, userIdTo) VALUES (?, ?, ?)',
             params,
           );
         })

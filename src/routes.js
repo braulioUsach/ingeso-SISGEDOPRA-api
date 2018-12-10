@@ -4,6 +4,7 @@ const login = require('./api/login/routes');
 const user = require('./api/user/routes');
 const signup = require('./api/signup/routes');
 const doc = require('./api/document/routes');
+const transfer = require('./api/transfer/routes');
 
 const router = new Router();
 
@@ -12,5 +13,6 @@ router.use('/login', login);
 router.use('/user', user);
 router.use('/signup', signup);
 router.use('/documents', doc);
+router.use('/transfers', transfer);
 
 module.exports = router;
