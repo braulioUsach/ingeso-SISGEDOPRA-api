@@ -38,6 +38,15 @@ class User {
         });
     });
   }
+
+  static readAll() {
+    return new Promise((resolve, reject) => Repository.readAll()
+      .then(rows => resolve(rows))
+      .catch((err) => {
+        console.error(err);
+        return reject(err);
+      }));
+  }
 }
 
 module.exports = User;

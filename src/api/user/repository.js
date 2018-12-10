@@ -60,6 +60,32 @@ class UserRepository {
         });
     });
   }
+
+  static readAll() {
+    let conn;
+    return new Promise((resolve, reject) => {
+      pool.getConnection()
+        .then((conection) => {
+          conn = conection;
+          return conn.query(
+            'SELECT * FROM users',
+          );
+        })
+        .then((rows) => {
+          conn.end();
+          const aux = JSON.parse(JSON.stringify(rows));
+          return resolve(aux.map((u) => {
+            delete u.password;
+            return u;
+          }));
+        })
+        .catch((err) => {
+          if (conn) conn.end();
+          console.error(err);
+          return reject(err);
+        });
+    });
+  }
 }
 
 module.exports = UserRepository;
