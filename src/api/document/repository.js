@@ -22,7 +22,7 @@ class UserRepository {
         })
         .catch((err) => {
           console.error(err);
-          reject(new Error(console.log(`Can't connect to DB: ${err}`)));
+          reject(new Error(`Can't connect to DB: ${err}`));
         });
     });
   }

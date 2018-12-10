@@ -45,7 +45,6 @@ class TransferRepository {
         .then((rows) => {
           conn.end();
           const aux = JSON.parse(JSON.stringify(rows));
-          console.log(aux);
           if (aux.length !== 1) {
             return reject(new Error('Transferencia no encontrada'));
           }
@@ -88,7 +87,6 @@ class TransferRepository {
   }
 
   static readPendingByUser(userId) {
-    console.log('debería estar llamando a este repo');
     let conn;
     return new Promise((resolve, reject) => {
       pool.getConnection()
@@ -96,13 +94,13 @@ class TransferRepository {
           conn = conection;
           return conn.query(
             `SELECT
-	            d.id as documentId,
-	            d.name as documentName,
-	            u.id as senderId,
-	            u.firstName as senderName,
-	            u.lastName as senderLastName,
-	            t.id as transferId,
-	            t.created as transferDate
+              d.id as documentId,
+              d.name as documentName,
+              u.id as senderId,
+              u.firstName as senderName,
+              u.lastName as senderLastName,
+              t.id as transferId,
+              t.created as transferDate
             FROM transfers t, documents d, users u
             WHERE t.userIdTo = ${userId}
             AND t.approved = 0
@@ -132,13 +130,13 @@ class TransferRepository {
           conn = conection;
           return conn.query(
             `SELECT
-	            d.id as documentId,
-	            d.name as documentName,
-	            u.id as senderId,
-	            u.firstName as senderName,
-	            u.lastName as senderLastName,
-	            t.id as transferId,
-	            t.created as transferDate
+              d.id as documentId,
+              d.name as documentName,
+              u.id as senderId,
+              u.firstName as senderName,
+              u.lastName as senderLastName,
+              t.id as transferId,
+              t.created as transferDate
             FROM transfers t, documents d, users u
             WHERE t.userIdTo = ${userId}
             AND t.approved = 1

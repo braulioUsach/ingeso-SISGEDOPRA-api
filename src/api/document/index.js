@@ -26,12 +26,6 @@ class Document {
     let doc;
     return new Promise((resolve, reject) => Repository.read(id)
       .then((row) => {
-        console.log(row.creatorId !== tokenValues.userId);
-        console.log(row.currentUserAssigned !== tokenValues.userId);
-        console.log(row.creatorId)
-        console.log(tokenValues.userId);
-        console.log(row.currentUserAssigned);
-        console.log(tokenValues.userId);
         if (row.creatorId !== tokenValues.userId && row.currentUserAssigned !== tokenValues.userId) {
           reject(new Error('No tienes permisos para leer el documento'));
         }
