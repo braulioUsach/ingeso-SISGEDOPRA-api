@@ -23,22 +23,25 @@ class Document {
   }
 
   static read(id, tokenValues) {
+    let doc;
     return new Promise((resolve, reject) => Repository.read(id)
       .then((row) => {
+        console.log(row.creatorId !== tokenValues.userId);
+        console.log(row.currentUserAssigned !== tokenValues.userId);
+        console.log(row.creatorId)
+        console.log(tokenValues.userId);
+        console.log(row.currentUserAssigned);
+        console.log(tokenValues.userId);
         if (row.creatorId !== tokenValues.userId && row.currentUserAssigned !== tokenValues.userId) {
           reject(new Error('No tienes permisos para leer el documento'));
         }
-        return resolve(row);
+        doc = row;
+        return Transfer.readByDocument(id);
       })
-      .catch((err) => {
-        console.error(err);
-        return reject(err);
-      }));
-  }
-
-  static readByUser(userId) {
-    return new Promise((resolve, reject) => Repository.readByUser(userId)
-      .then(row => resolve(row))
+      .then((transfers) => {
+        doc.transfers = transfers;
+        resolve(doc);
+      })
       .catch((err) => {
         console.error(err);
         return reject(err);
@@ -55,6 +58,15 @@ class Document {
       }));
   }
 
+  static created(tokenValues) {
+    return new Promise((resolve, reject) => Repository.readByUser(tokenValues.userId)
+      .then(rows => resolve(rows))
+      .catch((err) => {
+        console.error(err);
+        return reject(err);
+      }));
+  }
+
   static pending(tokenValues) {
     return new Promise((resolve, reject) => Transfer.pendingByUser(tokenValues.userId)
       .then(rows => resolve(rows))
@@ -65,7 +77,6 @@ class Document {
   }
 
   static received(tokenValues) {
-    console.log('approved');
     return new Promise((resolve, reject) => Transfer.approvedByUser(tokenValues.userId)
       .then(rows => resolve(rows))
       .catch((err) => {

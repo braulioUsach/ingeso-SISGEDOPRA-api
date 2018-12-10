@@ -33,7 +33,6 @@ class TransferRepository {
   }
 
   static read(id) {
-    console.log('id', id);
     let conn;
     return new Promise((resolve, reject) => {
       pool.getConnection()
@@ -178,6 +177,41 @@ class TransferRepository {
           if (conn) conn.end();
           console.error(err.message);
           reject(err);
+        });
+    });
+  }
+
+  static readByDocument(documentId) {
+    let conn;
+    return new Promise((resolve, reject) => {
+      pool.getConnection()
+        .then((conection) => {
+          conn = conection;
+          return conn.query(
+            `SELECT
+            t.id as transferId,
+             t.userIdFrom as userFromId,
+             ( SELECT firstName FROM users uf WHERE uf.id = t.userIdFrom ) as userFromName,
+             ( SELECT lastName FROM users uf WHERE uf.id = t.userIdFrom ) as userFromLastName,
+             t.userIdTo as userToId,
+             ( SELECT firstName FROM users uf WHERE uf.id = t.userIdTo ) as userToName,
+             ( SELECT lastName FROM users uf WHERE uf.id = t.userIdTo ) as userToLastName,
+             t.created as createdAt,
+             t.approved as approved,
+             t.updated as approvedAt
+            FROM transfers t
+            WHERE t.documentId = ${documentId};`,
+          );
+        })
+        .then((rows) => {
+          conn.end();
+          const aux = JSON.parse(JSON.stringify(rows));
+          return resolve(aux);
+        })
+        .catch((err) => {
+          if (conn) conn.end();
+          console.error(err);
+          return reject(err);
         });
     });
   }

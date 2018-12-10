@@ -77,6 +77,17 @@ class Transfer {
         reject(err);
       }));
   }
+
+  static readByDocument(documentId, tokenValues) {
+    return new Promise((resolve, reject) => Repository.readByDocument(documentId)
+      .then((row) => {
+        return resolve(row);
+      })
+      .catch((err) => {
+        console.error(err);
+        reject(err);
+      }));
+  }
 }
 
 module.exports = Transfer;

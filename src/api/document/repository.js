@@ -61,7 +61,7 @@ class UserRepository {
               (SELECT userIdTo
               FROM transfers t
               WHERE t.documentId = d.id ORDER BY id DESC LIMIT 1) AS currentUserAssigned
-            FROM documents d 
+            FROM documents d
             WHERE d.creatorId = ${userId};`,
           );
         })

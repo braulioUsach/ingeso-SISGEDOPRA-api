@@ -71,6 +71,24 @@ router
     }
   });
 
+router
+  .get('/created', async (ctx) => {
+    try {
+      if (!Helper.hasValidCredential(ctx.header.authorization)) {
+        ctx.status = 401;
+        ctx.body = { error: 'Credenciales inválidas' };
+        return;
+      }
+      const tokenValues = LoginHelper.readToken(ctx.header.authorization.split(' ').pop());
+      ctx.status = 200;
+      ctx.body = await Document.created(tokenValues);
+    } catch (err) {
+      ctx.status = 404;
+      ctx.body = {
+        error: err.message,
+      };
+    }
+  });
 
 router
   .get('/:id', async (ctx) => {
@@ -121,7 +139,7 @@ router
       const tokenValues = LoginHelper.readToken(ctx.header.authorization.split(' ').pop());
       ctx.status = 200;
       console.log(tokenValues.userId);
-      ctx.body = await Document.readByUser(tokenValues.userId);
+      ctx.body = await Document.created(tokenValues);
     } catch (err) {
       console.error(err);
       ctx.status = 404;
