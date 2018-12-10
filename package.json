@@ -8,7 +8,7 @@
     "coverage": "nyc mocha test/unit --recursive --exit",
     "develop": "nodemon src/server.js",
     "start": "node start src/server.js",
-    "aws": "pm2 NODE_ENV=production start src/server.js",
+    "aws": "pm2 start src/server.js",
     "stop": "pm2 stop server"
   },
   "repository": {
