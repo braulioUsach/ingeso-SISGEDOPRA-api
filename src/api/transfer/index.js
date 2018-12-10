@@ -8,8 +8,7 @@ class Transfer {
       const paramsFormatted = Helper.paramsToCreate(params, tokenValues);
       return DocumentRepository.read(params.document)
         .then((doc) => {
-          console.log(doc);
-          if (doc.currentUserAssigned === null && doc.creatorId !== tokenValues.userId) {
+          if ((doc.currentUserAssigned === null && doc.creatorId !== tokenValues.userId) || doc.currentUserAssigned !== tokenValues.userId) {
             reject(new Error('No puedes transferir el documento, ya que no eres el actual responsable del documento'));
           }
 
