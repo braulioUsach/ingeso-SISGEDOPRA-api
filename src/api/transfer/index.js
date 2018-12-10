@@ -6,14 +6,10 @@ class Transfer {
   static create(params, tokenValues) {
     return new Promise((resolve, reject) => {
       const paramsFormatted = Helper.paramsToCreate(params, tokenValues);
-      const q = [];
-      q.push(Repository.readLastByDocument(params.document));
-      q.push(DocumentRepository.read(params.document));
-      return Promise.all(q)
-        .then((promises) => {
-          const isCreator = promises[1].creatorId === tokenValues.userId;
-          const hasTransfers = !(promises[0].length === 0);
-          if (!isCreator && (!hasTransfers || promises[0].userIdTo !== tokenValues.userId)) {
+      return DocumentRepository.read(params.document)
+        .then((doc) => {
+          console.log(doc);
+          if (doc.currentUserAssigned === null && doc.creatorId !== tokenValues.userId) {
             reject(new Error('No puedes transferir el documento, ya que no eres el actual responsable del documento'));
           }
 

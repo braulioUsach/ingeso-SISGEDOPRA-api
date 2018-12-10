@@ -57,7 +57,11 @@ class UserRepository {
         .then((conection) => {
           conn = conection;
           return conn.query(
-            `SELECT * FROM documents WHERE id = "${id}"`,
+            `SELECT *,  (SELECT userIdTo
+              FROM transfers t
+              WHERE t.documentId = d.id ORDER BY id DESC LIMIT 1) AS currentUserAssigned
+              FROM documents d
+              WHERE d.id = "${id}";`,
           );
         })
         .then((rows) => {
@@ -67,29 +71,6 @@ class UserRepository {
             return reject(new Error('Documento no encontrado'));
           }
           return resolve(aux[0]);
-        })
-        .catch((err) => {
-          if (conn) conn.end();
-          console.error(err);
-          return reject(err);
-        });
-    });
-  }
-
-  static readByUser(userid) {
-    let conn;
-    return new Promise((resolve, reject) => {
-      pool.getConnection()
-        .then((conection) => {
-          conn = conection;
-          return conn.query(
-            `SELECT * FROM documents WHERE creatorId = "${userid}"`,
-          );
-        })
-        .then((rows) => {
-          conn.end();
-          const aux = JSON.parse(JSON.stringify(rows));
-          return resolve(aux);
         })
         .catch((err) => {
           if (conn) conn.end();
