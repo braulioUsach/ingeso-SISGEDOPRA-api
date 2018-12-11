@@ -20,11 +20,12 @@ Mientras que el front-end del Software lo podrás encontrar en [https://github.c
 ## 1. Versiones Utilizadas
 
 * NodeJS 9.2.1
+* Koa 9.2.1
 
 ## 2. Requerimientos
 
 * Npm >= 6.2.0
-* Node >= 9.2.1
+* Node >= 2.2.2
 
 ## 3. Instalación
 
@@ -38,13 +39,14 @@ Cuando esté el repositorio clonado, se deberá ingresar a él. Está ubicado en
 
 	cd ingeso-SISGEDOPRA-api
 
-Luego, la instalación de las librerías JavaScript (JS) necesarias:
+Luego se debe inicializar la app con el siguiente comando:
+  
+  make start
 
-	npm install
+En caso de no ejecutarse el comando anterior, se debe proceder a ejecutar los siguientes comandos:
 
-Luego, se debe inicializar el servidor del proyecto:
-
-  npm run start
+	- npm install
+  - npm run start
 
 
 ## 4. Mantención
@@ -55,7 +57,7 @@ Si en un futuro el sistema es actualizado, deberás dirigirte al directorio dond
 
 Una vez dentro, deberás ejecutar el comando para actualizar el repositorio
 
-	git pull
+	git pull 
 
 Instalar las librerías nuevas de JavaScript (JS) en caso de que existieran:
 
