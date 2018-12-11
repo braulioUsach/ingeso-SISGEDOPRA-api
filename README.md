@@ -11,6 +11,9 @@ proceso administrativo de una Institución. Este software fue desarrollado por 4
 En este repositorio encontrarás el back-end del Software desarrollado bajo las siguientes herramientas:
 
   * NodeJS + koa
+  * Motor base de datos: MariaDB
+
+Podrás encontrar una versión demo de la API en [http://18.213.206.200/health]
 
 Mientras que el front-end del Software lo podrás encontrar en [https://github.com/siturra/SISGEDOPRA]
 
@@ -21,6 +24,7 @@ Mientras que el front-end del Software lo podrás encontrar en [https://github.c
 
 * NodeJS 9.2.1
 * Koa 9.2.1
+* MariaDB 10.1.34
 
 ## 2. Requerimientos
 
@@ -40,7 +44,7 @@ Cuando esté el repositorio clonado, se deberá ingresar a él. Está ubicado en
 	cd ingeso-SISGEDOPRA-api
 
 Luego se debe inicializar la app con el siguiente comando:
-  
+
   make start
 
 En caso de no ejecutarse el comando anterior, se debe proceder a ejecutar los siguientes comandos:
@@ -48,6 +52,15 @@ En caso de no ejecutarse el comando anterior, se debe proceder a ejecutar los si
 	- npm install
   - npm run start
 
+### 3.1 Base de datos
+
+  El artefacto por defecto se conecta a una base de datos alojada en la nube. Si se desea modificar la base de datos a conectar, se debe cambiar la configuración dentro del archivo de configuración ubicado en:
+
+  /config/default.json
+
+  Se adjunta modelo de base de datos con la que trabaja el artefacto a la fecha en la siguiente resulta
+
+  /extras/schemeDefault.sql
 
 ## 4. Mantención
 
@@ -57,11 +70,11 @@ Si en un futuro el sistema es actualizado, deberás dirigirte al directorio dond
 
 Una vez dentro, deberás ejecutar el comando para actualizar el repositorio
 
-	git pull 
+	git pull
 
 Instalar las librerías nuevas de JavaScript (JS) en caso de que existieran:
 
-	npm install 
+	npm install
 
 ## 5. Soporte
 
