@@ -87,20 +87,19 @@ class UserRepository {
           conn = conection;
           return conn.query(
             `SELECT
-              MAX(t.id) as lastTransferId,
-              t.created as lastTransferDate,
-              d.updated as finishedDate,
+              t.id as transferId,
+              t.created as transferDate,
               d.id as documentId,
               d.name as documentName,
-              u.id as senderId,
-              u.firstName as senderName,
-              u.lastName as senderLastName
-              FROM transfers t, documents d, users u
+              t.userIdTo as senderId,
+              (SELECT u.firstName FROM users u WHERE u.id = t.userIdTo) as senderName,
+              (SELECT u.lastName FROM users u WHERE u.id = t.userIdTo) as senderLastName
+              FROM transfers t, documents d
               WHERE t.userIdTo = ${userId}
               AND t.documentId = d.id
               AND t.approved = 1
               AND d.finished = 1
-              AND t.userIdTo = u.id;`,
+              ORDER BY t.id DESC;`,
           );
         })
         .then((rows) => {
