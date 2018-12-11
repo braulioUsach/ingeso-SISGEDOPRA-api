@@ -1,4 +1,5 @@
 start:
+	npm install 
 	npm run start
 aws:
 	npm run aws
