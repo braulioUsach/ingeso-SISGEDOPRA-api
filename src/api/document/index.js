@@ -26,9 +26,9 @@ class Document {
     let doc;
     return new Promise((resolve, reject) => Repository.read(id)
       .then((row) => {
-        if (row.creatorId !== tokenValues.userId && row.currentUserAssigned !== tokenValues.userId) {
-          reject(new Error('No tienes permisos para leer el documento'));
-        }
+        // if (row.creatorId !== tokenValues.userId && row.currentUserAssigned !== tokenValues.userId) {
+        //   reject(new Error('No tienes permisos para leer el documento'));
+        // }
         doc = row;
         return Transfer.readByDocument(id);
       })
