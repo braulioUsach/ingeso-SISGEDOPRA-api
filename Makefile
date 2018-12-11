@@ -1,5 +1,5 @@
 start:
-	npm install 
+	npm install
 	npm run start
 aws:
 	npm run aws
@@ -10,7 +10,8 @@ restart:
 	make aws
 update:
 	make stop
-	rm package-lock.json
-	git pull
+	git fetch --all
+	git reset --hard origin/master
+	git pull origin master
 	npm install
 	make aws
