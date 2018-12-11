@@ -53,7 +53,7 @@ class Document {
   }
 
   static created(tokenValues) {
-    return new Promise((resolve, reject) => Repository.readByUser(tokenValues.userId)
+    return new Promise((resolve, reject) => Repository.readCreatedByUser(tokenValues.userId)
       .then(rows => resolve(rows))
       .catch((err) => {
         console.error(err);
@@ -72,6 +72,25 @@ class Document {
 
   static received(tokenValues) {
     return new Promise((resolve, reject) => Transfer.approvedByUser(tokenValues.userId)
+      .then(rows => resolve(rows))
+      .catch((err) => {
+        console.error(err);
+        return reject(err);
+      }));
+  }
+
+  static finished(tokenValues) {
+    console.log('user id:', tokenValues.userId);
+    return new Promise((resolve, reject) => Repository.readFinishedByUser(tokenValues.userId)
+      .then(rows => resolve(rows))
+      .catch((err) => {
+        console.error(err);
+        return reject(err);
+      }));
+  }
+
+  static finishTransfers(id, tokenValues) {
+    return new Promise((resolve, reject) => Repository.updateToFinished(id)
       .then(rows => resolve(rows))
       .catch((err) => {
         console.error(err);

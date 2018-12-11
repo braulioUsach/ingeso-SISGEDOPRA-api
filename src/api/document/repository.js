@@ -50,7 +50,7 @@ class UserRepository {
     });
   }
 
-  static readByUser(userId) {
+  static readCreatedByUser(userId) {
     let conn;
     return new Promise((resolve, reject) => {
       pool.getConnection()
@@ -79,6 +79,42 @@ class UserRepository {
     });
   }
 
+  static readFinishedByUser(userId) {
+    let conn;
+    return new Promise((resolve, reject) => {
+      pool.getConnection()
+        .then((conection) => {
+          conn = conection;
+          return conn.query(
+            `SELECT
+              MAX(t.id) as lastTransferId,
+              t.created as lastTransferDate,
+              d.updated as finishedDate,
+              d.id as documentId,
+              d.name as documentName,
+              u.id as senderId,
+              u.firstName as senderName,
+              u.lastName as senderLastName
+              FROM transfers t, documents d, users u
+              WHERE t.userIdTo = ${userId}
+              AND t.documentId = d.id
+              AND t.approved = 1
+              AND d.finished = 1
+              AND t.userIdTo = u.id;`,
+          );
+        })
+        .then((rows) => {
+          conn.end();
+          const aux = JSON.parse(JSON.stringify(rows));
+          return resolve(aux);
+        })
+        .catch((err) => {
+          if (conn) conn.end();
+          console.error(err);
+          return reject(err);
+        });
+    });
+  }
 
   static read(id) {
     let conn;
@@ -101,6 +137,29 @@ class UserRepository {
             return reject(new Error('Documento no encontrado'));
           }
           return resolve(aux[0]);
+        })
+        .catch((err) => {
+          if (conn) conn.end();
+          console.error(err);
+          return reject(err);
+        });
+    });
+  }
+
+  static updateToFinished(id) {
+    let conn;
+    return new Promise((resolve, reject) => {
+      pool.getConnection()
+        .then((conection) => {
+          conn = conection;
+          return conn.query(
+            `UPDATE documents SET finished=1 WHERE id = ${id};`,
+          );
+        })
+        .then((rows) => {
+          conn.end();
+          const aux = JSON.parse(JSON.stringify(rows));
+          return resolve(aux);
         })
         .catch((err) => {
           if (conn) conn.end();

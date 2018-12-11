@@ -105,6 +105,7 @@ class TransferRepository {
             WHERE t.userIdTo = ${userId}
             AND t.approved = 0
             AND t.userIdFrom = u.id
+            AND d.finished = 0
             AND t.documentId = d.id;`,
           );
         })
@@ -140,6 +141,7 @@ class TransferRepository {
             FROM transfers t, documents d, users u
             WHERE t.userIdTo = ${userId}
             AND t.approved = 1
+            AND d.finished = 0
             AND t.userIdFrom = u.id
             AND t.documentId = d.id;`,
           );
